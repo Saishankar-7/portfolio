@@ -3,6 +3,7 @@ import { Github, ExternalLink, ArrowUpRight } from "lucide-react";
 import carRentalImg from "../../assets/images/carrental.png";
 import wanderlustImg from "../../assets/images/Airbnb.png";
 import devconnectImg from "../../assets/images/devconnect.png";
+import spamImg from "../../assets/images/spam.png";
 
 const fadeUp = (delay = 0) => ({
     initial: { opacity: 0, y: 28 },
@@ -13,6 +14,17 @@ const fadeUp = (delay = 0) => ({
 
 const Projects = () => {
     const projects = [
+        {
+            title: "DevConnect",
+            desc: "DevConnect is a web platform that connects developers with employees to request job referrals. Users can create profiles, chat in real time, and send referral requests. Employees can review profiles and accept or reject requests. It helps developers improve their chances of getting interview calls.",
+            tags: ["React", "Socket.io", "Tailwind CSS", "Node.js", "MongoDB"],
+            links: {
+                github: "https://github.com/Saishankar-7/devconnect7",
+                demo: "https://devconnect7.vercel.app/",
+            },
+            image: devconnectImg,
+            accent: "#38bdf8",
+        },
         {
             title: "Car Rental",
             desc: "A full-stack MERN car rental booking app deployed on Vercel — featuring user authentication, interactive car browsing with pickup scheduling, seamless booking workflows, and an admin dashboard for inventory and order management.",
@@ -25,6 +37,17 @@ const Projects = () => {
             accent: "#00ffe5",
         },
         {
+            title: "SMS Spam Detection",
+            desc: "An SMS spam classifier works by analyzing the content of text messages and applying machine learning techniques to sort them into two categories: spam and ham. Spam messages include unwanted content such as advertisements, scams, or fake offers, while ham messages are normal, legitimate communications like personal or important messages.",
+            tags: ["Python", "Scikit-learn", "Pandas", "Numpy"],
+            links: {
+                github: "https://github.com/Saishankar-7/sms-spam-classifier.git",
+                demo: "https://sms-spam-classifier-5ew2.onrender.com/",
+            },
+            image: spamImg,
+            accent: "#38bdf8",
+        },
+        {
             title: "AirBnB Clone",
             desc: "A full-stack vacation rental platform for browsing, listing, and booking accommodations — complete with Google/GitHub OAuth login, Mapbox location views, and seamless booking flows.",
             tags: ["EJS", "Express", "MongoDB", "Mapbox"],
@@ -34,18 +57,8 @@ const Projects = () => {
             },
             image: wanderlustImg,
             accent: "#38bdf8",
-        },
-        {
-            title: "DevConnect",
-            desc: "DevConnect is a web platform that connects developers with employees to request job referrals. Users can create profiles, chat in real time, and send referral requests. Employees can review profiles and accept or reject requests. It helps developers improve their chances of getting interview calls.",
-            tags: ["React", "Socket.io", "Tailwind CSS", "Node.js", "MongoDB"],
-            links: {
-                github: "https://github.com/Saishankar-7/devconnect7",
-                demo: "https://devconnect7.vercel.app/",
-            },
-            image: devconnectImg,
-            accent: "#38bdf8",
-        },
+        }
+
     ];
 
     return (
