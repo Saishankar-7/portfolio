@@ -46,7 +46,7 @@ const Projects = () => {
                 demo: "https://car-rental-pink-seven.vercel.app",
             },
             image: carRentalImg,
-            accent: "#202D30",
+            accent: "#00ffe5",
         },
         {
             title: "SMS Spam Detection",
@@ -68,7 +68,7 @@ const Projects = () => {
                 demo: "https://wander-lust-mu-sepia.vercel.app/",
             },
             image: wanderlustImg,
-            accent: "#060726",
+            accent: "#00ffe5",
         }
 
     ];
