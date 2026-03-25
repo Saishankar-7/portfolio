@@ -4,6 +4,7 @@ import carRentalImg from "../../assets/images/carrental.png";
 import wanderlustImg from "../../assets/images/Airbnb.png";
 import devconnectImg from "../../assets/images/devconnect.png";
 import spamImg from "../../assets/images/spam.png";
+import movieImg from "../../assets/images/movie.png";
 
 const fadeUp = (delay = 0) => ({
     initial: { opacity: 0, y: 28 },
@@ -25,6 +26,17 @@ const Projects = () => {
             image: devconnectImg,
             accent: "#38bdf8",
         },
+          {
+            title: "Movie Recommandation",
+            desc: "A movie recommendation system filters data to suggest relevant movies based on user preferences, content similarities (genre, plot), or collaborative behavior",
+            tags: ["React", "Fast api", "Sciket-learn","NLP"],
+            links: {
+                github: "https://github.com/Saishankar-7/Movie-Recommandation.git",
+                demo: "https://movierecommandation-ruddy.vercel.app/",
+            },
+            image: movieImg,
+            accent: "#00ffe5",
+        },
         {
             title: "Car Rental",
             desc: "A full-stack MERN car rental booking app deployed on Vercel — featuring user authentication, interactive car browsing with pickup scheduling, seamless booking workflows, and an admin dashboard for inventory and order management.",
@@ -34,7 +46,7 @@ const Projects = () => {
                 demo: "https://car-rental-pink-seven.vercel.app",
             },
             image: carRentalImg,
-            accent: "#00ffe5",
+            accent: "#202D30",
         },
         {
             title: "SMS Spam Detection",
@@ -56,7 +68,7 @@ const Projects = () => {
                 demo: "https://wander-lust-mu-sepia.vercel.app/",
             },
             image: wanderlustImg,
-            accent: "#38bdf8",
+            accent: "#060726",
         }
 
     ];
