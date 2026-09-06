@@ -1,31 +1,24 @@
 import { useState, useEffect } from "react";
 import { cn } from "../../utils/cn";
-import {
-    motion,
-    useScroll,
-    useMotionValueEvent,
-    AnimatePresence,
-} from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import {
     Home,
     User,
     Code2,
     LayoutGrid,
     Mail,
-    Monitor,
     Menu,
     X,
-    MapPin,
-    Zap,
-    ChevronRight,
     FileText,
     ArrowUpRight,
+    MapPin,
+    Sparkles,
 } from "lucide-react";
 
 const navLinks = [
     { name: "Home", href: "#hero", icon: Home },
-    { name: "About", href: "#identity", icon: User },
-    { name: "Skills", href: "#stack", icon: Monitor },
+    { name: "About", href: "#about", icon: User },
+    { name: "Skills", href: "#skills", icon: Code2 },
     { name: "Projects", href: "#projects", icon: LayoutGrid },
     { name: "Contact", href: "#contact", icon: Mail },
 ];
@@ -36,11 +29,34 @@ const Header = () => {
     const [activeSection, setActiveSection] = useState("Home");
     const [hoveredLink, setHoveredLink] = useState<string | null>(null);
 
-    const { scrollY } = useScroll();
+    useEffect(() => {
+        const handleScroll = () => {
+            setScrolled(window.scrollY > 20);
 
-    useMotionValueEvent(scrollY, "change", (latest) => {
-        setScrolled(latest > 20);
-    });
+            // Active section detection via scroll position
+            const sections = [
+                { id: "hero", name: "Home" },
+                { id: "about", name: "About" },
+                { id: "skills", name: "Skills" },
+                { id: "projects", name: "Projects" },
+                { id: "contact", name: "Contact" },
+            ];
+
+            const scrollPosition = window.scrollY + 200;
+
+            for (const section of [...sections].reverse()) {
+                const el = document.getElementById(section.id);
+                if (el && scrollPosition >= el.offsetTop) {
+                    setActiveSection(section.name);
+                    break;
+                }
+            }
+        };
+
+        window.addEventListener("scroll", handleScroll, { passive: true });
+        handleScroll();
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, []);
 
     // Handle body scroll locking when mobile menu is open
     useEffect(() => {
@@ -49,260 +65,229 @@ const Header = () => {
         } else {
             document.body.style.overflow = "";
         }
-        return () => { document.body.style.overflow = ""; };
+        return () => {
+            document.body.style.overflow = "";
+        };
     }, [mobileMenuOpen]);
 
-    // Active section detection (simplified for now, usually needs IntersectionObserver)
-    useEffect(() => {
-        const handleScroll = () => {
-            const sections = navLinks.map(link => link.href.substring(1));
-            const scrollPosition = window.scrollY + 100;
+    const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+        e.preventDefault();
+        const targetId = href.replace("#", "");
+        const targetElement = document.getElementById(targetId);
+        if (targetElement) {
+            const offset = 80;
+            const bodyRect = document.body.getBoundingClientRect().top;
+            const elementRect = targetElement.getBoundingClientRect().top;
+            const elementPosition = elementRect - bodyRect;
+            const offsetPosition = elementPosition - offset;
 
-            for (const sectionId of sections.reverse()) {
-                const element = document.getElementById(sectionId);
-                if (element && scrollPosition >= element.offsetTop) {
-                    const link = navLinks.find(l => l.href === `#${sectionId}`);
-                    if (link) setActiveSection(link.name);
-                    break;
-                }
-            }
-        };
-
-        window.addEventListener("scroll", handleScroll);
-        return () => window.removeEventListener("scroll", handleScroll);
-    }, []);
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: "smooth",
+            });
+        }
+        setMobileMenuOpen(false);
+    };
 
     return (
         <>
             {/* Main Header Container */}
             <motion.header
-                initial={{ y: -100, opacity: 0 }}
+                initial={{ y: -80, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
-                transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+                transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
                 className={cn(
-                    "fixed top-0 left-0 right-0 z-50 transition-all duration-500",
+                    "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
                     scrolled
-                        ? "py-3 bg-cyber-black/40 backdrop-blur-md border-b border-white/5 shadow-[0_4px_30px_rgba(0,0,0,0.1)]"
+                        ? "py-3.5 bg-[#090d14]/80 backdrop-blur-xl border-b border-white/[0.08] shadow-glass"
                         : "py-6 bg-transparent"
                 )}
             >
-                <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
-
-                    {/* Brand/Logo Area */}
-                    <motion.a
+                <div className="max-w-6xl mx-auto px-6 flex items-center justify-between">
+                    {/* Brand / Logo */}
+                    <a
                         href="#hero"
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        className="flex items-center gap-3 group"
+                        onClick={(e) => scrollToSection(e, "#hero")}
+                        className="flex items-center gap-3 group focus:outline-none"
                     >
-                        <div className="relative">
-                            <div className="absolute inset-0 rounded-xl bg-primary/30 blur-lg group-hover:bg-primary/50 transition-all duration-500" />
-                            <div className="relative w-12 h-12 rounded-xl bg-gradient-to-br from-primary to-neon-blue flex items-center justify-center shadow-2xl border border-white/10">
-                                <Code2 className="w-6 h-6 text-cyber-black animate-pulse-slow" strokeWidth={2.5} />
-                            </div>
+                        <div className="relative w-10 h-10 rounded-xl bg-surface-card border border-white/10 flex items-center justify-center transition-all duration-300 group-hover:border-cyan-500/40 group-hover:shadow-[0_0_16px_rgba(6,182,212,0.25)]">
+                            <span className="font-heading font-extrabold text-sm text-cyan-400">
+                                ST
+                            </span>
                         </div>
-                        <div className="hidden sm:flex flex-col">
-                            <span className="text-base font-extrabold tracking-tight text-white uppercase font-syne leading-none">
+                        <div className="flex flex-col">
+                            <span className="text-sm font-semibold font-heading text-slate-100 group-hover:text-cyan-300 transition-colors">
                                 Sai Sankar
                             </span>
-                            <div className="flex items-center gap-1.5 mt-1">
-                                <span className="h-[2px] w-4 bg-primary rounded-full" />
-                                <span className="text-[0.65rem] font-bold tracking-[0.2em] text-primary/80 uppercase font-mono">
-                                    Software Dev
-                                </span>
-                            </div>
+                            <span className="text-[11px] font-mono text-slate-400 tracking-wider uppercase">
+                                Full Stack Dev
+                            </span>
                         </div>
-                    </motion.a>
+                    </a>
 
-                    {/* Desktop Navigation (Floating Pill style) */}
+                    {/* Desktop Navigation (Floating Pill) */}
                     <nav className="hidden md:block">
-                        <div className={cn(
-                            "flex items-center gap-1 p-1.5 rounded-full border transition-all duration-500",
-                            "bg-white/[0.03] backdrop-blur-xl border-white/[0.08] shadow-inner font-mono",
-                            scrolled && "bg-cyber-black/80 border-white/20 shadow-2xl scale-95"
-                        )}>
-                            {navLinks.map((link) => (
-                                <a
-                                    key={link.name}
-                                    href={link.href}
-                                    onMouseEnter={() => setHoveredLink(link.name)}
-                                    onMouseLeave={() => setHoveredLink(null)}
-                                    className={cn(
-                                        "relative px-6 py-2.5 rounded-full text-xs font-bold tracking-widest uppercase transition-all duration-300 flex items-center gap-2",
-                                        activeSection === link.name ? "text-cyber-black" : "text-white/50 hover:text-white"
-                                    )}
-                                >
-                                    {activeSection === link.name && (
-                                        <motion.div
-                                            layoutId="active-pill"
-                                            className="absolute inset-0 bg-primary rounded-full -z-10 shadow-[0_0_20px_rgba(0,245,212,0.4)]"
-                                            transition={{ type: "spring", bounce: 0.25, duration: 0.5 }}
-                                        />
-                                    )}
-                                    {hoveredLink === link.name && activeSection !== link.name && (
-                                        <motion.div
-                                            layoutId="hover-pill"
-                                            className="absolute inset-0 bg-white/5 rounded-full -z-20"
-                                            transition={{ type: "spring", bounce: 0.2, duration: 0.4 }}
-                                        />
-                                    )}
-                                    <link.icon className={cn("w-4 h-4", activeSection === link.name ? "text-cyber-black" : "text-primary/70")} />
-                                    <span className="relative z-10">{link.name}</span>
-                                </a>
-                            ))}
+                        <div className="flex items-center gap-1 p-1.5 rounded-full bg-surface-card/80 backdrop-blur-md border border-white/[0.08] shadow-inner">
+                            {navLinks.map((link) => {
+                                const isActive = activeSection === link.name;
+                                return (
+                                    <a
+                                        key={link.name}
+                                        href={link.href}
+                                        onClick={(e) => scrollToSection(e, link.href)}
+                                        onMouseEnter={() => setHoveredLink(link.name)}
+                                        onMouseLeave={() => setHoveredLink(null)}
+                                        className={cn(
+                                            "relative px-4 py-1.5 rounded-full text-xs font-medium transition-colors duration-200 flex items-center gap-1.5 select-none focus:outline-none",
+                                            isActive
+                                                ? "text-slate-900 font-semibold"
+                                                : "text-slate-400 hover:text-slate-100"
+                                        )}
+                                    >
+                                        {isActive && (
+                                            <motion.div
+                                                layoutId="nav-active-pill"
+                                                className="absolute inset-0 bg-cyan-400 rounded-full shadow-[0_0_16px_rgba(6,182,212,0.4)]"
+                                                transition={{
+                                                    type: "spring",
+                                                    stiffness: 380,
+                                                    damping: 30,
+                                                }}
+                                            />
+                                        )}
+                                        {hoveredLink === link.name && !isActive && (
+                                            <motion.div
+                                                layoutId="nav-hover-pill"
+                                                className="absolute inset-0 bg-white/[0.06] rounded-full"
+                                                transition={{
+                                                    type: "spring",
+                                                    stiffness: 400,
+                                                    damping: 30,
+                                                }}
+                                            />
+                                        )}
+                                        <span className="relative z-10">{link.name}</span>
+                                    </a>
+                                );
+                            })}
                         </div>
                     </nav>
 
                     {/* Action Area */}
                     <div className="flex items-center gap-3">
-                        {/* Resume Button (Desktop) */}
-                        <motion.a
+                        {/* Open for Work Beacon */}
+                        <div className="hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20">
+                            <span className="relative flex h-2 w-2">
+                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400" />
+                            </span>
+                            <span className="text-[11px] font-medium tracking-wide text-emerald-300">
+                                Available for Work
+                            </span>
+                        </div>
+
+                        {/* Resume Button */}
+                        <a
                             href="/resume.pdf"
                             target="_blank"
                             rel="noopener noreferrer"
-                            initial={{ opacity: 0, x: 20 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ delay: 0.5 }}
-                            className="hidden sm:flex items-center gap-2 px-5 py-2 rounded-xl bg-primary text-cyber-black text-[0.65rem] font-bold uppercase tracking-widest hover:bg-primary/90 transition-all duration-300 shadow-lg shadow-primary/20 font-mono"
+                            className="hidden sm:inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-white/[0.06] hover:bg-white/[0.1] text-slate-200 hover:text-white text-xs font-medium border border-white/10 transition-all duration-200 hover:border-white/20 active:scale-[0.98]"
                         >
-                            <FileText size={14} />
+                            <FileText size={13} className="text-cyan-400" />
                             <span>Resume</span>
-                            <ArrowUpRight size={12} className="opacity-50" />
-                        </motion.a>
+                            <ArrowUpRight size={12} className="opacity-60" />
+                        </a>
 
-                        {/* Availability Indicator */}
-                        <motion.div
-                            initial={{ opacity: 0, scale: 0.8 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            className="hidden lg:flex items-center gap-3 px-4 py-2 rounded-full bg-white/[0.05] border border-white/10 hover:border-emerald-500/30 transition-colors duration-300"
-                        >
-                            <span className="relative flex h-2 w-2">
-                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.5)]" />
-                            </span>
-                            <span className="text-[0.65rem] font-bold tracking-widest text-emerald-400/90 uppercase font-mono">
-                                Open for Work
-                            </span>
-                        </motion.div>
-
-                        {/* Mobile Menu Button */}
+                        {/* Mobile Menu Trigger */}
                         <button
                             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                            className="md:hidden relative z-50 p-2.5 rounded-2xl bg-white/5 border border-white/10 text-white hover:text-primary transition-all duration-300 hover:scale-105 active:scale-95"
-                            aria-label="Toggle menu"
+                            className="md:hidden relative z-50 p-2.5 rounded-xl bg-white/[0.05] border border-white/10 text-slate-300 hover:text-white active:scale-95 transition-all"
+                            aria-label="Toggle navigation menu"
                         >
-                            {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+                            {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
                         </button>
                     </div>
                 </div>
             </motion.header>
 
-            {/* Mobile Navigation Menu - Redesigned */}
+            {/* Mobile Slide-in Drawer */}
             <AnimatePresence>
                 {mobileMenuOpen && (
-                    <div className="fixed inset-0 z-[60] md:hidden">
-                        {/* Backdrop with Blur */}
+                    <div className="fixed inset-0 z-50 md:hidden">
+                        {/* Backdrop */}
                         <motion.div
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
-                            className="absolute inset-0 bg-cyber-black/60 backdrop-blur-lg"
+                            transition={{ duration: 0.2 }}
+                            className="absolute inset-0 bg-[#090d14]/80 backdrop-blur-md"
                             onClick={() => setMobileMenuOpen(false)}
                         />
 
-                        {/* Side Panel */}
+                        {/* Drawer */}
                         <motion.div
-                            initial={{ x: "100%", opacity: 0 }}
-                            animate={{ x: 0, opacity: 1 }}
-                            exit={{ x: "100%", opacity: 0 }}
-                            transition={{ type: "spring", damping: 30, stiffness: 300 }}
-                            className="absolute top-0 right-0 bottom-0 w-[85%] max-w-sm bg-cyber-dark/95 border-l border-white/10 shadow-2xl flex flex-col pt-[20%] overflow-hidden"
+                            initial={{ x: "100%" }}
+                            animate={{ x: 0 }}
+                            exit={{ x: "100%" }}
+                            transition={{ type: "spring", damping: 28, stiffness: 280 }}
+                            className="absolute top-0 right-0 bottom-0 w-[85%] max-w-sm bg-[#0e131f] border-l border-white/10 shadow-2xl flex flex-col p-6 pt-24 overflow-y-auto"
                         >
-                            {/* Decorative background element */}
-                            <div className="absolute -top-24 -right-24 w-64 h-64 bg-primary/10 rounded-full blur-[100px]" />
-                            <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-neon-blue/10 rounded-full blur-[100px]" />
-
-                            <div className="px-8 mb-12 relative">
-                                <div className="flex items-center gap-4 mb-2">
-                                    <div className="w-10 h-10 rounded-lg bg-primary/20 flex items-center justify-center border border-primary/30">
-                                        <Zap className="text-primary w-5 h-5" />
-                                    </div>
-                                    <h2 className="text-2xl font-extrabold text-white italic tracking-tighter uppercase font-syne">
-                                        Navigation
-                                    </h2>
-                                </div>
-                                <p className="text-xs text-white/40 font-bold uppercase tracking-[0.2em] font-mono">Explore my world</p>
+                            <div className="flex items-center gap-2 mb-8 px-2">
+                                <Sparkles className="text-cyan-400" size={16} />
+                                <span className="text-xs font-mono uppercase tracking-widest text-slate-400">
+                                    Navigation
+                                </span>
                             </div>
 
-                            <nav className="flex flex-col gap-4 px-6 mb-auto relative">
-                                {navLinks.map((link, i) => (
-                                    <motion.a
-                                        key={link.name}
-                                        href={link.href}
-                                        initial={{ x: 50, opacity: 0 }}
-                                        animate={{ x: 0, opacity: 1 }}
-                                        transition={{ delay: i * 0.1 }}
-                                        onClick={() => setMobileMenuOpen(false)}
-                                        className={cn(
-                                            "flex items-center justify-between p-5 rounded-2xl group transition-all duration-300",
-                                            activeSection === link.name
-                                                ? "bg-primary/10 border border-primary/20"
-                                                : "hover:bg-white/5 border border-transparent"
-                                        )}
-                                    >
-                                        <div className="flex items-center gap-4">
-                                            <div className={cn(
-                                                "p-3 rounded-xl transition-colors duration-300",
-                                                activeSection === link.name ? "bg-primary text-cyber-black" : "bg-white/5 text-white/60"
-                                            )}>
-                                                <link.icon size={20} strokeWidth={2.5} />
-                                            </div>
-                                            <span className={cn(
-                                                "text-sm font-bold tracking-widest uppercase font-mono",
-                                                activeSection === link.name ? "text-white" : "text-white/50"
-                                            )}>
-                                                {link.name}
-                                            </span>
-                                        </div>
-                                        <ChevronRight size={18} className={cn(
-                                            "transition-transform duration-300 group-hover:translate-x-1",
-                                            activeSection === link.name ? "text-primary" : "text-white/20"
-                                        )} />
-                                    </motion.a>
-                                ))}
+                            <nav className="flex flex-col gap-2 mb-auto">
+                                {navLinks.map((link) => {
+                                    const isActive = activeSection === link.name;
+                                    const Icon = link.icon;
+                                    return (
+                                        <a
+                                            key={link.name}
+                                            href={link.href}
+                                            onClick={(e) => scrollToSection(e, link.href)}
+                                            className={cn(
+                                                "flex items-center gap-3.5 px-4 py-3.5 rounded-xl text-sm font-medium transition-all duration-200",
+                                                isActive
+                                                    ? "bg-cyan-500/10 text-cyan-300 border border-cyan-500/20 font-semibold"
+                                                    : "text-slate-400 hover:text-slate-100 hover:bg-white/[0.04]"
+                                            )}
+                                        >
+                                            <Icon
+                                                size={18}
+                                                className={isActive ? "text-cyan-400" : "text-slate-500"}
+                                            />
+                                            <span>{link.name}</span>
+                                        </a>
+                                    );
+                                })}
                             </nav>
 
-                            {/* Footer inside mobile menu */}
-                            <div className="p-8 border-t border-white/5 bg-white/[0.02] relative">
-                                <div className="flex items-center gap-4 mb-6">
-                                    <div className="w-10 h-10 rounded-full overflow-hidden border border-white/20">
-                                        <div className="w-full h-full bg-gradient-to-br from-primary to-neon-blue flex items-center justify-center text-cyber-black font-black">
-                                            SS
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <p className="text-[0.6rem] font-black text-white uppercase tracking-widest leading-none mb-1">Location</p>
-                                        <div className="flex items-center gap-1.5 text-xs text-white/40 font-bold">
-                                            <MapPin size={12} className="text-primary/70" />
-                                            <span>Vizag, AP, India</span>
-                                        </div>
-                                    </div>
+                            {/* Mobile Drawer Footer */}
+                            <div className="pt-6 border-t border-white/[0.08] space-y-4">
+                                <div className="flex items-center gap-2 text-xs text-slate-400 px-1">
+                                    <MapPin size={13} className="text-cyan-400" />
+                                    <span>Visakhapatnam, AP, India</span>
                                 </div>
-                                <div className="flex gap-4">
+                                <div className="grid grid-cols-2 gap-2.5">
                                     <a
                                         href="/resume.pdf"
-                                        download="resume.pdf"
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="flex-1 py-3 px-4 rounded-xl bg-white/5 border border-white/10 text-[0.65rem] font-bold text-center text-white/60 uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-white/10 transition-colors font-mono"
+                                        className="flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl bg-white/[0.05] border border-white/10 text-xs font-medium text-slate-200 hover:bg-white/[0.08]"
                                     >
-                                        <FileText size={14} /> Resume
+                                        <FileText size={13} />
+                                        Resume
                                     </a>
                                     <button
-                                        onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
-                                        className="flex-[1.5] py-3 px-4 rounded-xl bg-primary text-cyber-black text-[0.65rem] font-bold text-center uppercase tracking-widest shadow-lg shadow-primary/20 font-mono"
+                                        onClick={(e) => {
+                                            scrollToSection(e as unknown as React.MouseEvent<HTMLAnchorElement>, "#contact");
+                                        }}
+                                        className="flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl bg-cyan-500 text-slate-950 text-xs font-semibold hover:bg-cyan-400"
                                     >
-                                        Hire Me
+                                        Contact Me
                                     </button>
                                 </div>
                             </div>

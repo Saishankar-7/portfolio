@@ -2,51 +2,41 @@ import * as React from "react";
 import { motion, type HTMLMotionProps } from "framer-motion";
 import { cn } from "../../utils/cn";
 
-// I need to install class-variance-authority as I missed it in the initial plan
-// But for now I can implement without it or install it. 
-// Plan said "Button: Primary (neon), Secondary (outline), Ghost".
-// I'll implement a simple version first without CVA if I don't want to install more deps, 
-// BUT CVA is standard in Shadcn-like setups. 
-// I'll install it or just write custom logic.
-// The user requirement didn't strictly ask for CVA, just "Reusable components".
-// I'll stick to simple props for now to avoid installing more deps if I can, 
-// OR I can quickly install it. It's better to have CVA.
-// Wait, I didn't install `class-variance-authority`. 
-// I'll stick to manual class logic for now to save time/complexity, or add it.
-// "Clean, readable code structure" -> CVA is cleaner.
-// I'll proceed with manual logic for now.
-
 interface ButtonProps extends HTMLMotionProps<"button"> {
-    variant?: "primary" | "secondary" | "ghost" | "outline";
+    variant?: "primary" | "secondary" | "outline" | "ghost";
     size?: "sm" | "md" | "lg" | "icon";
     children: React.ReactNode;
     className?: string;
-    asChild?: boolean; // Radix UI pattern, but I'll skip implementation complexity for now
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     ({ className, variant = "primary", size = "md", children, ...props }, ref) => {
-
-        const baseStyles = "inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 transition-all duration-300";
+        const baseStyles =
+            "inline-flex items-center justify-center font-medium rounded-xl transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-[#090d14] disabled:pointer-events-none disabled:opacity-50 select-none cursor-pointer";
 
         const variants = {
-            primary: "bg-neon-teal text-cyber-black hover:bg-neon-teal/90 hover:shadow-[0_0_20px_rgba(0,245,212,0.5)]",
-            secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
-            outline: "border border-neon-teal/50 text-neon-teal bg-transparent hover:bg-neon-teal/10 hover:border-neon-teal",
-            ghost: "hover:bg-accent hover:text-accent-foreground text-foreground/80 hover:text-neon-teal",
+            primary:
+                "bg-cyan-500 text-[#090d14] font-semibold hover:bg-cyan-400 shadow-[0_0_20px_-3px_rgba(6,182,212,0.4)] active:scale-[0.98]",
+            secondary:
+                "bg-white/[0.05] hover:bg-white/[0.09] text-slate-100 border border-white/10 active:scale-[0.98]",
+            outline:
+                "bg-transparent hover:bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 hover:border-cyan-500/60 active:scale-[0.98]",
+            ghost:
+                "hover:bg-white/[0.06] text-slate-400 hover:text-slate-100 active:scale-[0.98]",
         };
 
         const sizes = {
-            sm: "h-8 px-3 text-xs",
-            md: "h-10 px-6 py-2",
-            lg: "h-12 px-8 text-base",
-            icon: "h-9 w-9",
+            sm: "h-9 px-3.5 text-xs gap-1.5",
+            md: "h-11 px-5 text-sm gap-2",
+            lg: "h-12 px-7 text-base gap-2.5",
+            icon: "h-10 w-10 p-0",
         };
 
         return (
             <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
+                whileHover={{ y: -1 }}
+                whileTap={{ y: 0, scale: 0.98 }}
+                transition={{ duration: 0.15 }}
                 className={cn(baseStyles, variants[variant], sizes[size], className)}
                 ref={ref}
                 {...props}

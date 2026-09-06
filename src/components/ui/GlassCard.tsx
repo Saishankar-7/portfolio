@@ -9,23 +9,21 @@ interface GlassCardProps extends HTMLMotionProps<"div"> {
 }
 
 const GlassCard = React.forwardRef<HTMLDivElement, GlassCardProps>(
-    ({ children, className, hoverEffect = false, ...props }, ref) => {
+    ({ children, className, hoverEffect = true, ...props }, ref) => {
         return (
             <motion.div
-                whileHover={hoverEffect ? { y: -5, boxShadow: "0 10px 30px -10px rgba(0, 245, 212, 0.15)" } : {}}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 16 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5 }}
+                viewport={{ once: true, margin: "-40px" }}
+                transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                whileHover={hoverEffect ? { y: -4 } : {}}
                 className={cn(
-                    "relative overflow-hidden rounded-xl border border-white/5 bg-cyber-dark/40 backdrop-blur-xl p-6 shadow-xl",
-                    "hover:border-neon-teal/30 transition-colors duration-300",
+                    "glass-card relative overflow-hidden rounded-2xl p-6 sm:p-8",
                     className
                 )}
                 ref={ref}
                 {...props}
             >
-                <div className="absolute inset-0 bg-gradient-to-br from-neon-teal/5 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
                 {children}
             </motion.div>
         );

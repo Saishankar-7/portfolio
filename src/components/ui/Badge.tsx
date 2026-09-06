@@ -3,22 +3,36 @@ import { cn } from "../../utils/cn";
 
 interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
     children: React.ReactNode;
-    variant?: "default" | "outline" | "neon" | "secondary";
+    variant?: "default" | "cyan" | "outline" | "subtle" | "emerald";
+    size?: "sm" | "md";
 }
 
-const Badge: React.FC<BadgeProps> = ({ children, className, variant = "default", ...props }) => {
+const Badge: React.FC<BadgeProps> = ({
+    children,
+    className,
+    variant = "default",
+    size = "sm",
+    ...props
+}) => {
     const variants = {
-        default: "bg-secondary text-secondary-foreground border-transparent",
-        outline: "border-border text-foreground bg-transparent",
-        neon: "border-neon-teal/50 text-neon-teal bg-neon-teal/10 shadow-[0_0_10px_rgba(0,245,212,0.2)]",
-        secondary: "bg-secondary text-secondary-foreground border-transparent",
+        default: "bg-white/[0.05] text-slate-300 border-white/[0.08]",
+        cyan: "bg-cyan-500/10 text-cyan-300 border-cyan-500/20 shadow-[0_0_12px_rgba(6,182,212,0.15)]",
+        emerald: "bg-emerald-500/10 text-emerald-300 border-emerald-500/20",
+        outline: "bg-transparent text-slate-400 border-white/10 hover:border-white/20 hover:text-slate-200",
+        subtle: "bg-white/[0.03] text-slate-400 border-transparent",
+    };
+
+    const sizes = {
+        sm: "px-2.5 py-0.5 text-[11px] font-medium tracking-wide",
+        md: "px-3 py-1 text-xs font-medium tracking-wide",
     };
 
     return (
         <span
             className={cn(
-                "inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
+                "inline-flex items-center gap-1.5 rounded-full border transition-all duration-200 select-none",
                 variants[variant],
+                sizes[size],
                 className
             )}
             {...props}

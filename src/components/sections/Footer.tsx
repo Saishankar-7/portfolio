@@ -1,45 +1,81 @@
-import { Cpu } from "lucide-react";
+import { ArrowUp, Github, Linkedin, Mail,Instagram } from "lucide-react";
 
 const Footer = () => {
+    const scrollToTop = () => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    };
+
     return (
-        <footer 
-            className="relative py-12 overflow-hidden bg-[#060a0f] border-t border-white/[0.05]"
-            style={{ fontFamily: "'Syne', sans-serif" }}
-        >
-            <div className="relative z-10 max-w-6xl mx-auto px-6 flex flex-col items-center gap-6">
-                
-                {/* Visual marker */}
-                <div className="flex items-center gap-3">
-                    <div className="w-10 h-px" style={{ background: "linear-gradient(90deg, transparent, rgba(0,255,229,0.3))" }} />
-                    <div className="p-2 rounded-lg" style={{ background: "rgba(0,255,229,0.06)" }}>
-                        <Cpu size={18} className="text-[#00ffe5]/40 animate-pulse" />
+        <footer className="relative py-12 overflow-hidden border-t border-white/[0.06] bg-[#070a10]">
+            <div className="max-w-6xl mx-auto px-6">
+                <div className="flex flex-col md:flex-row items-center justify-between gap-6 pb-8 border-b border-white/[0.06]">
+                    {/* Brand */}
+                    <div className="flex flex-col items-center md:items-start text-center md:text-left space-y-1">
+                        <span className="text-base font-bold font-heading text-slate-100">
+                            Sai Sankar Tumpala
+                        </span>
+                        <p className="text-xs text-slate-400">
+                            Full Stack Developer & AI Engineer
+                        </p>
                     </div>
-                    <div className="w-10 h-px" style={{ background: "linear-gradient(270deg, transparent, rgba(0,255,229,0.3))" }} />
+
+                    {/* Social Links & Back to Top */}
+                    <div className="flex items-center gap-4">
+                        <div className="flex items-center gap-2">
+                            <a
+                                href="https://github.com/Saishankar-7"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="p-2.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] text-slate-400 hover:text-white border border-white/[0.06] transition-all"
+                                aria-label="GitHub profile"
+                            >
+                                <Github size={16} />
+                            </a>
+                            <a
+                                href="https://www.linkedin.com/in/saishankar7"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="p-2.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] text-slate-400 hover:text-white border border-white/[0.06] transition-all"
+                                aria-label="LinkedIn profile"
+                            >
+                                <Linkedin size={16} />
+                            </a>
+                            <a
+                                href="mailto:tumpalasaisankar@gmail.com"
+                                className="p-2.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] text-slate-400 hover:text-white border border-white/[0.06] transition-all"
+                                aria-label="Email address"
+                            >
+                                <Mail size={16} />
+                            </a>
+                            <a
+                                href="https://www.instagram.com/saishankar__7"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="p-2.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] text-slate-400 hover:text-white border border-white/[0.06] transition-all"
+                                aria-label="Instagram profile"
+                            >
+                                <Instagram size={16} />
+                            </a>
+                        </div>
+
+                        <button
+                            onClick={scrollToTop}
+                            className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] text-slate-400 hover:text-cyan-300 text-xs font-mono font-medium border border-white/[0.06] transition-all cursor-pointer"
+                            aria-label="Back to top"
+                        >
+                            <span>Top</span>
+                            <ArrowUp size={13} />
+                        </button>
+                    </div>
                 </div>
 
-                <div className="text-center space-y-2">
-                    <p className="text-[0.65rem] font-bold tracking-[0.4em] uppercase text-white/60">
-                        © 2024 Sai Sankar Tumpala
+                <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
+                    <p>© {new Date().getFullYear()} Sai Sankar Tumpala. All rights reserved.</p>
+                    <p className="flex items-center gap-1">
+                        Built with React, TypeScript & Tailwind CSS
                     </p>
-                    <p 
-                        className="text-[0.55rem] font-medium tracking-[0.25em] uppercase" 
-                        style={{ fontFamily: "'IBM Plex Mono', monospace", color: "rgba(255,255,255,0.2)" }}
-                    >
-                        Built with React + Tailwind + Precision
-                    </p>
-                </div>
-
-                {/* Status indicator */}
-                <div className="flex items-center gap-2 px-3 py-1 rounded-full border border-white/[0.03] bg-white/[0.02]">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#00ffe5] animate-pulse shadow-[0_0_8px_#00ffe5]" />
-                    <span className="text-[0.5rem] font-bold tracking-[0.1em] uppercase text-white/30" style={{ fontFamily: "'IBM Plex Mono', monospace" }}>
-                        System Status: Operational
-                    </span>
                 </div>
             </div>
-
-            {/* Subtle background glow */}
-            <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full max-w-2xl h-px bg-gradient-to-r from-transparent via-[#00ffe5]/10 to-transparent" />
         </footer>
     );
 };

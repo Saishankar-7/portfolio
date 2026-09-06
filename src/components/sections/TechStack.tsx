@@ -1,139 +1,94 @@
 import { motion } from "framer-motion";
-import { Database, Brain, Layout } from "lucide-react";
+import { Layout, Server, Brain, Wrench } from "lucide-react";
+import { SectionTitle } from "../ui/SectionTitle";
 
-const fadeUp = (delay = 0) => ({
-    initial: { opacity: 0, y: 28 },
-    whileInView: { opacity: 1, y: 0 },
-    viewport: { once: true },
-    transition: { duration: 0.7, delay, ease: [0.22, 1, 0.36, 1] as const },
-});
+const skillCategories = [
+    {
+        title: "Frontend Architecture",
+        icon: Layout,
+        desc: "Building accessible, highly responsive, and interactive user interfaces with modern component design systems.",
+        skills: ["React", "TypeScript", "Tailwind CSS", "JavaScript (ES6+)", "HTML5 & CSS3", "Vite"],
+        accent: "cyan",
+    },
+    {
+        title: "Backend & Systems",
+        icon: Server,
+        desc: "Engineering scalable backend architectures, authentication flows, and high-concurrency database queries.",
+        skills: ["Node.js", "Express", "FastAPI", "Flask", "MongoDB", "REST APIs", "Socket.io"],
+        accent: "sky",
+    },
+    {
+        title: "AI & Machine Learning",
+        icon: Brain,
+        desc: "Developing and deploying predictive models, NLP classifiers, and intelligent recommendation systems.",
+        skills: ["Python", "Scikit-Learn", "NLP", "Pandas", "NumPy", "Deep Learning", "Data Pipelines"],
+        accent: "indigo",
+    },
+    {
+        title: "Tools & Workflow",
+        icon: Wrench,
+        desc: "Employing standard DevOps tooling, version control, and continuous testing to ship high-quality code.",
+        skills: ["Git & GitHub", "Vercel", "Postman", "Linux", "VS Code", "npm / yarn"],
+        accent: "teal",
+    },
+];
 
 const TechStack = () => {
-    const categories = [
-        {
-            title: "Frontend Architecture",
-            icon: Layout,
-            desc: "Crafting immersive, performant user interfaces with modern reactive frameworks and pixel-perfect design systems.",
-            stack: ["React", "Tailwind", "TypeScript"],
-            accent: "#00ffe5",
-        },
-        {
-            title: "AI & Machine Learning",
-            icon: Brain,
-            desc: "Implementing neural networks and LLM pipelines for autonomous intelligence and intelligent UX experiences.",
-            stack: ["Python", "Machine Learning", "Deep Learning", "NLP"],
-            accent: "#a78bfa",
-        },
-        {
-            title: "Backend Systems",
-            icon: Database,
-            desc: "Developing scalable distributed services and high-concurrency micro-architectures that power modern apps.",
-            stack: ["Node.js", "Express", "MongoDB", "REST APIs", "FastAPI", "Flask"],
-            accent: "#38bdf8",
-        },
-    ];
-
     return (
         <section
-            id="stack"
-            className="relative py-28 overflow-hidden bg-[#060a0f]"
-            style={{ fontFamily: "'Syne', sans-serif" }}
+            id="skills"
+            className="relative py-24 md:py-32 overflow-hidden border-t border-white/[0.04]"
         >
+            {/* Ambient Background Light */}
+            <div className="absolute top-1/3 right-0 w-96 h-96 bg-cyan-500/[0.03] blur-[140px] pointer-events-none" />
 
-            {/* Background glows */}
-            <div className="absolute inset-0 pointer-events-none">
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] rounded-full bg-[#00ffe5]/5 blur-[120px]" />
-                <div className="absolute bottom-0 right-[-5%] w-[380px] h-[380px] rounded-full bg-[#7c3aed]/6 blur-[110px]" />
-                {/* Subtle horizontal rule at top */}
-                <div
-                    className="absolute top-0 left-0 right-0 h-px"
-                    style={{ background: "linear-gradient(90deg, transparent, rgba(0,255,229,0.15), transparent)" }}
+            <div className="max-w-6xl mx-auto px-6">
+                <SectionTitle
+                    eyebrow="Technical Stack"
+                    title="Tools & technologies"
+                    highlight="I work with."
+                    description="A carefully selected suite of modern languages, frameworks, and data platforms for building production-grade software."
                 />
-            </div>
 
-            <div className="relative z-10 max-w-6xl mx-auto px-6">
-
-                {/* ── Section Header ── */}
-                <motion.div {...fadeUp(0)} className="mb-16">
-                    <span
-                        className="text-[0.6rem] font-bold tracking-[0.3em] uppercase block mb-4"
-                        style={{ fontFamily: "'IBM Plex Mono', monospace", color: "#00ffe5" }}
-                    >
-                        ◈ Core Competencies
-                    </span>
-                    <h2 className="text-[clamp(2rem,5vw,3rem)] font-extrabold tracking-tight text-white leading-tight mb-4">
-                        Technical Skills
-                    </h2>
-                    <p className="text-[0.92rem] max-w-xl leading-relaxed" style={{ color: "rgba(255,255,255,0.38)" }}>
-                        My toolkit is optimised for performance, scalability, and modern AI integration —
-                        built to ship fast and last long.
-                    </p>
-                </motion.div>
-
-                {/* ── Cards Grid ── */}
-                <div className="grid md:grid-cols-3 gap-5">
-                    {categories.map((cat, i) => (
-                        <motion.div
-                            key={i}
-                            {...fadeUp(0.12 + i * 0.1)}
-                            whileHover={{ y: -6 }}
-                            transition={{ type: "spring", stiffness: 260, damping: 20 }}
-                            className="relative flex flex-col p-6 rounded-2xl overflow-hidden group cursor-default"
-                            style={{
-                                background: "rgba(255,255,255,0.025)",
-                                border: "1px solid rgba(255,255,255,0.06)",
-                            }}
-                        >
-                            {/* Card top accent line */}
-                            <div
-                                className="absolute top-0 left-0 right-0 h-[2px] opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                                style={{ background: `linear-gradient(90deg, transparent, ${cat.accent}, transparent)` }}
-                            />
-
-                            {/* Subtle glow on hover */}
-                            <div
-                                className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none rounded-2xl"
-                                style={{ background: `radial-gradient(ellipse at 50% 0%, ${cat.accent}0d 0%, transparent 70%)` }}
-                            />
-
-                            {/* Icon */}
-                            <div
-                                className="w-11 h-11 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 shrink-0"
-                                style={{ background: `${cat.accent}12` }}
+                <div className="grid md:grid-cols-2 gap-6">
+                    {skillCategories.map((category, index) => {
+                        const Icon = category.icon;
+                        return (
+                            <motion.div
+                                key={category.title}
+                                initial={{ opacity: 0, y: 20 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ duration: 0.5, delay: index * 0.1 }}
+                                className="glass-card p-6 sm:p-8 rounded-2xl flex flex-col justify-between group hover:border-cyan-500/30 transition-all duration-300"
                             >
-                                <cat.icon size={20} style={{ color: cat.accent }} />
-                            </div>
+                                <div className="space-y-4">
+                                    <div className="flex items-center gap-3">
+                                        <div className="w-10 h-10 rounded-xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center border border-cyan-500/20 group-hover:scale-105 transition-transform">
+                                            <Icon size={20} />
+                                        </div>
+                                        <h3 className="text-lg font-bold font-heading text-slate-100">
+                                            {category.title}
+                                        </h3>
+                                    </div>
+                                    <p className="text-sm text-slate-400 leading-relaxed">
+                                        {category.desc}
+                                    </p>
+                                </div>
 
-                            {/* Title */}
-                            <h3 className="text-[1rem] font-bold text-white mb-3 leading-tight">{cat.title}</h3>
-
-                            {/* Description */}
-                            <p
-                                className="text-[0.82rem] leading-relaxed mb-6 flex-grow"
-                                style={{ color: "rgba(255,255,255,0.36)" }}
-                            >
-                                {cat.desc}
-                            </p>
-
-                            {/* Tech badges */}
-                            <div className="flex flex-wrap gap-2 mt-auto">
-                                {cat.stack.map((tech) => (
-                                    <span
-                                        key={tech}
-                                        className="px-2.5 py-1 rounded-lg text-[0.6rem] font-bold tracking-[0.18em] uppercase transition-colors duration-200"
-                                        style={{
-                                            fontFamily: "'IBM Plex Mono', monospace",
-                                            background: `${cat.accent}0f`,
-                                            border: `1px solid ${cat.accent}22`,
-                                            color: `${cat.accent}cc`,
-                                        }}
-                                    >
-                                        {tech}
-                                    </span>
-                                ))}
-                            </div>
-                        </motion.div>
-                    ))}
+                                <div className="mt-6 pt-6 border-t border-white/[0.06] flex flex-wrap gap-2">
+                                    {category.skills.map((skill) => (
+                                        <span
+                                            key={skill}
+                                            className="px-3 py-1 rounded-lg bg-white/[0.04] hover:bg-white/[0.08] text-slate-300 hover:text-cyan-300 text-xs font-mono font-medium border border-white/[0.07] hover:border-cyan-500/30 transition-all select-none"
+                                        >
+                                            {skill}
+                                        </span>
+                                    ))}
+                                </div>
+                            </motion.div>
+                        );
+                    })}
                 </div>
             </div>
         </section>

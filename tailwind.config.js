@@ -8,88 +8,59 @@ export default {
     theme: {
         container: {
             center: true,
-            padding: "2rem",
+            padding: "1.5rem",
             screens: {
-                "2xl": "1400px",
+                "2xl": "1280px",
             },
         },
         extend: {
             colors: {
-                border: "hsl(var(--border))",
-                input: "hsl(var(--input))",
-                ring: "hsl(var(--ring))",
-                background: "hsl(var(--background))",
-                foreground: "hsl(var(--foreground))",
+                border: "rgba(255, 255, 255, 0.08)",
+                input: "rgba(255, 255, 255, 0.06)",
+                ring: "#06b6d4",
+                background: "#090d14",
+                foreground: "#f8fafc",
+                surface: {
+                    DEFAULT: "#0e131f",
+                    card: "#111624",
+                    hover: "#171e30",
+                    border: "rgba(255, 255, 255, 0.07)",
+                },
                 primary: {
-                    DEFAULT: "hsl(var(--primary))",
-                    foreground: "hsl(var(--primary-foreground))",
-                },
-                secondary: {
-                    DEFAULT: "hsl(var(--secondary))",
-                    foreground: "hsl(var(--secondary-foreground))",
-                },
-                destructive: {
-                    DEFAULT: "hsl(var(--destructive))",
-                    foreground: "hsl(var(--destructive-foreground))",
-                },
-                muted: {
-                    DEFAULT: "hsl(var(--muted))",
-                    foreground: "hsl(var(--muted-foreground))",
+                    DEFAULT: "#06b6d4",
+                    foreground: "#090d14",
+                    hover: "#22d3ee",
                 },
                 accent: {
-                    DEFAULT: "hsl(var(--accent))",
-                    foreground: "hsl(var(--accent-foreground))",
+                    cyan: "#06b6d4",
+                    teal: "#14b8a6",
+                    sky: "#38bdf8",
+                    indigo: "#6366f1",
+                    emerald: "#10b981",
                 },
-                popover: {
-                    DEFAULT: "hsl(var(--popover))",
-                    foreground: "hsl(var(--popover-foreground))",
+                muted: {
+                    DEFAULT: "#94a3b8",
+                    foreground: "#64748b",
                 },
-                card: {
-                    DEFAULT: "hsl(var(--card))",
-                    foreground: "hsl(var(--card-foreground))",
-                },
-                neon: {
-                    teal: "#00f5d4",
-                    blue: "#00b4d8",
-                    purple: "#7209b7",
-                },
-                cyber: {
-                    black: "#0b0f14",
-                    dark: "#0e141b",
-                    gray: "#1c232b",
-                }
             },
             borderRadius: {
-                lg: "var(--radius)",
-                md: "calc(var(--radius) - 2px)",
-                sm: "calc(var(--radius) - 4px)",
+                "2xl": "1rem",
+                "3xl": "1.5rem",
             },
             fontFamily: {
-                sans: ["Inter", "ui-sans-serif", "system-ui"],
-                display: ["Outfit", "sans-serif"],
-                heading: ["Space Grotesk", "sans-serif"],
-                special: ["Plus Jakarta Sans", "sans-serif"],
-                syne: ["Syne", "sans-serif"],
-                mono: ["IBM Plex Mono", "monospace"],
+                sans: ["Inter", "system-ui", "-apple-system", "sans-serif"],
+                heading: ["Plus Jakarta Sans", "Inter", "sans-serif"],
+                mono: ["JetBrains Mono", "IBM Plex Mono", "monospace"],
             },
-            keyframes: {
-                "accordion-down": {
-                    from: { height: "0" },
-                    to: { height: "var(--radix-accordion-content-height)" },
-                },
-                "accordion-up": {
-                    from: { height: "var(--radix-accordion-content-height)" },
-                    to: { height: "0" },
-                },
-                glow: {
-                    "0%, 100%": { boxShadow: "0 0 5px #00f5d4, 0 0 10px #00f5d4" },
-                    "50%": { boxShadow: "0 0 20px #00f5d4, 0 0 30px #00f5d4" },
-                }
+            boxShadow: {
+                "glass": "0 8px 32px 0 rgba(0, 0, 0, 0.37)",
+                "glow": "0 0 25px -5px rgba(6, 182, 212, 0.3)",
+                "glow-sm": "0 0 15px -3px rgba(6, 182, 212, 0.25)",
+                "card": "0 4px 20px -2px rgba(0, 0, 0, 0.5), inset 0 1px 0 0 rgba(255, 255, 255, 0.05)",
+                "card-hover": "0 12px 30px -4px rgba(0, 0, 0, 0.6), inset 0 1px 0 0 rgba(255, 255, 255, 0.1)",
             },
             animation: {
-                "accordion-down": "accordion-down 0.2s ease-out",
-                "accordion-up": "accordion-up 0.2s ease-out",
-                glow: "glow 2s infinite",
+                "pulse-slow": "pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite",
             },
         },
     },

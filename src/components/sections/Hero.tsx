@@ -1,26 +1,27 @@
 import { useState, useEffect } from "react";
 import { motion, useScroll, useTransform, useSpring, useMotionValue } from "framer-motion";
-import { Terminal, ArrowUpRight, Mail } from "lucide-react";
+import { ArrowUpRight, Mail, Terminal, Sparkles, ChevronDown, CheckCircle2 } from "lucide-react";
+import { Button } from "../ui/Button";
 
 // --- Typewriter Component ---
 const Typewriter = ({ texts }: { texts: string[] }) => {
     const [index, setIndex] = useState(0);
     const [displayText, setDisplayText] = useState("");
     const [isDeleting, setIsDeleting] = useState(false);
-    const [speed, setSpeed] = useState(150);
+    const [speed, setSpeed] = useState(120);
 
     useEffect(() => {
         const currentText = texts[index % texts.length];
         const handleTyping = () => {
             if (isDeleting) {
                 setDisplayText((prev) => prev.slice(0, -1));
-                setSpeed(50);
+                setSpeed(40);
             } else {
                 setDisplayText((prev) => currentText.slice(0, prev.length + 1));
-                setSpeed(150);
+                setSpeed(100);
             }
             if (!isDeleting && displayText === currentText) {
-                setTimeout(() => setIsDeleting(true), 2000);
+                setTimeout(() => setIsDeleting(true), 2400);
             } else if (isDeleting && displayText === "") {
                 setIsDeleting(false);
                 setIndex((prev) => prev + 1);
@@ -31,51 +32,63 @@ const Typewriter = ({ texts }: { texts: string[] }) => {
     }, [displayText, isDeleting, index, texts, speed]);
 
     return (
-        <span className="inline-block">
+        <span className="inline-flex items-center text-cyan-300 font-semibold font-mono">
             {displayText}
             <motion.span
                 animate={{ opacity: [1, 0] }}
-                transition={{ duration: 0.7, repeat: Infinity, ease: "linear" }}
-                className="inline-block w-[2px] h-[1.1em] bg-[#00ffe5] ml-0.5 align-middle"
+                transition={{ duration: 0.6, repeat: Infinity, ease: "linear" }}
+                className="inline-block w-0.5 h-4 bg-cyan-400 ml-1"
             />
         </span>
     );
 };
 
-// --- Hero Component ---
 const Hero = () => {
     const { scrollY } = useScroll();
-    const opacity = useTransform(scrollY, [0, 320], [1, 0]);
-    const yShift = useTransform(scrollY, [0, 320], [0, 60]);
+    const opacity = useTransform(scrollY, [0, 350], [1, 0]);
+    const yShift = useTransform(scrollY, [0, 350], [0, 50]);
 
     const mouseX = useMotionValue(0);
     const mouseY = useMotionValue(0);
-    const blobX = useSpring(mouseX, { stiffness: 40, damping: 25 });
-    const blobY = useSpring(mouseY, { stiffness: 40, damping: 25 });
+    const blobX = useSpring(mouseX, { stiffness: 45, damping: 25 });
+    const blobY = useSpring(mouseY, { stiffness: 45, damping: 25 });
 
     useEffect(() => {
-        const move = (e: MouseEvent) => {
+        const handleMouseMove = (e: MouseEvent) => {
             mouseX.set(e.clientX);
             mouseY.set(e.clientY);
         };
-        window.addEventListener("mousemove", move);
-        return () => window.removeEventListener("mousemove", move);
-    }, []);
+        window.addEventListener("mousemove", handleMouseMove);
+        return () => window.removeEventListener("mousemove", handleMouseMove);
+    }, [mouseX, mouseY]);
 
-    const roles = ["Full Stack Developer", "UI/UX Designer", "ML Enthusiast", "Data Scientist"];
+    const roles = [
+        "Full Stack Web Applications",
+        "Machine Learning Pipelines",
+        "Scalable Backend Services",
+        "Thoughtful UI/UX Systems",
+    ];
+
+    const scrollTo = (id: string) => {
+        const el = document.getElementById(id);
+        if (el) {
+            const offset = 80;
+            const bodyRect = document.body.getBoundingClientRect().top;
+            const elementRect = el.getBoundingClientRect().top;
+            const elementPosition = elementRect - bodyRect;
+            const offsetPosition = elementPosition - offset;
+            window.scrollTo({ top: offsetPosition, behavior: "smooth" });
+        }
+    };
 
     return (
         <section
             id="hero"
-            className="relative min-h-[100dvh] flex items-center justify-center overflow-hidden bg-[#060a0f]"
-            style={{ fontFamily: "'Syne', sans-serif" }}
+            className="relative min-h-[100vh] flex items-center justify-center pt-24 pb-16 overflow-hidden"
         >
-            {/* Google Fonts */}
-            <style>{`@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap');`}</style>
-
-            {/* ── BACKGROUND ── */}
-            <div className="absolute inset-0 pointer-events-none overflow-hidden">
-                {/* Mouse-following glow */}
+            {/* ── Visual Backdrop ── */}
+            <div className="absolute inset-0 pointer-events-none overflow-hidden select-none">
+                {/* Mouse-following ambient glow */}
                 <motion.div
                     style={{
                         x: blobX,
@@ -83,209 +96,139 @@ const Hero = () => {
                         translateX: "-50%",
                         translateY: "-50%",
                     }}
-                    className="absolute w-[560px] h-[560px] rounded-full bg-[#00ffe5]/8 blur-[130px]"
+                    className="absolute w-[500px] h-[500px] rounded-full bg-cyan-500/[0.07] blur-[120px]"
                 />
-                {/* Corner glows */}
-                <div className="absolute top-[-12%] right-[-8%] w-[480px] h-[480px] rounded-full bg-[#7c3aed]/8 blur-[110px]" />
-                <div className="absolute bottom-[-10%] left-[-6%] w-[440px] h-[440px] rounded-full bg-[#00ffe5]/5 blur-[120px]" />
 
-                {/* Fine dot grid */}
+                {/* Secondary ambient lights */}
+                <div className="absolute top-[10%] right-[15%] w-[400px] h-[400px] rounded-full bg-indigo-500/[0.05] blur-[130px]" />
+                <div className="absolute bottom-[10%] left-[10%] w-[350px] h-[350px] rounded-full bg-cyan-500/[0.04] blur-[100px]" />
+
+                {/* Subtle dot matrix with radial mask */}
                 <div
-                    className="absolute inset-0 opacity-[0.045]"
+                    className="absolute inset-0 opacity-[0.03]"
                     style={{
-                        backgroundImage: "radial-gradient(circle, #ffffff 1px, transparent 1px)",
-                        backgroundSize: "36px 36px",
-                        maskImage: "radial-gradient(ellipse 80% 70% at 50% 50%, black 40%, transparent 100%)",
+                        backgroundImage: "radial-gradient(#ffffff 1px, transparent 1px)",
+                        backgroundSize: "32px 32px",
+                        maskImage: "radial-gradient(ellipse 75% 65% at 50% 45%, black 20%, transparent 85%)",
+                        WebkitMaskImage: "radial-gradient(ellipse 75% 65% at 50% 45%, black 20%, transparent 85%)",
                     }}
-                />
-
-                {/* Horizontal scan line */}
-                <motion.div
-                    animate={{ top: ["0%", "100%"] }}
-                    transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
-                    className="absolute left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#00ffe5]/20 to-transparent"
                 />
             </div>
 
-            {/* ── MAIN CONTENT ── */}
+            {/* ── Main Hero Content ── */}
             <motion.div
                 style={{ opacity, y: yShift }}
-                className="relative z-10 w-full max-w-3xl mx-auto px-6 flex flex-col items-center text-center gap-6"
+                className="relative z-10 max-w-4xl mx-auto px-6 flex flex-col items-center text-center gap-8"
             >
-                {/* Status pill */}
+                {/* Top Badge */}
                 <motion.div
-                    initial={{ opacity: 0, y: -16 }}
+                    initial={{ opacity: 0, y: -12 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                    transition={{ duration: 0.5 }}
+                    className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/[0.04] border border-white/10 backdrop-blur-md"
                 >
-
-                </motion.div>
-
-                {/* Name */}
-                <motion.h1
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.85, delay: 0.12, ease: [0.22, 1, 0.36, 1] }}
-                    className="text-[clamp(2.8rem,8vw,5.5rem)] font-extrabold leading-[0.92] tracking-tight text-white"
-                >
-                    Sai Sankar
-                    <br />
-                    <span
-                        style={{
-                            backgroundImage: "linear-gradient(90deg, #00ffe5 0%, #38bdf8 55%, #a78bfa 100%)",
-                            WebkitBackgroundClip: "text",
-                            WebkitTextFillColor: "transparent",
-                        }}
-                    >
-                        Tumpala
-                    </span>
-                </motion.h1>
-
-                {/* Typewriter role */}
-                <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.35 }}
-                    className="flex items-center gap-2.5 text-base md:text-lg font-medium"
-                    style={{ fontFamily: "'IBM Plex Mono', monospace", color: "rgba(255,255,255,0.45)" }}
-                >
-                    <Terminal size={17} style={{ color: "#00ffe5" }} />
-                    <span>I am a</span>
-                    <span className="text-white font-semibold">
-                        <Typewriter texts={roles} />
+                    <Sparkles size={13} className="text-cyan-400" />
+                    <span className="text-xs font-mono font-medium tracking-wider text-slate-300 uppercase">
+                        Full Stack Developer & AI Engineer
                     </span>
                 </motion.div>
 
-                {/* Bio */}
+                {/* Confident Headline */}
+                <motion.div
+                    initial={{ opacity: 0, y: 16 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.1 }}
+                    className="space-y-3"
+                >
+                    <h1 className="text-4xl sm:text-6xl md:text-7xl font-extrabold font-heading text-slate-100 tracking-tight leading-[1.08]">
+                        Crafting digital products with{" "}
+                        <span className="text-gradient-accent">clarity & precision.</span>
+                    </h1>
+                </motion.div>
+
+                {/* Subtitle with Typewriter */}
+                <motion.div
+                    initial={{ opacity: 0, y: 16 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.2 }}
+                    className="flex flex-col sm:flex-row items-center justify-center gap-2 text-base sm:text-lg text-slate-400 max-w-2xl font-normal leading-relaxed"
+                >
+                    <div className="flex items-center gap-2">
+                        <Terminal size={16} className="text-cyan-400 shrink-0" />
+                        <span>Specializing in</span>
+                    </div>
+                    <Typewriter texts={roles} />
+                </motion.div>
+
+                {/* Supporting Description */}
                 <motion.p
                     initial={{ opacity: 0, y: 16 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.48, duration: 0.7 }}
-                    className="text-[0.95rem] md:text-base leading-relaxed max-w-xl"
-                    style={{ color: "rgba(255,255,255,0.38)" }}
+                    transition={{ duration: 0.6, delay: 0.3 }}
+                    className="text-sm sm:text-base text-slate-400 max-w-xl leading-relaxed"
                 >
-                    I'm a{" "}
-                    <span style={{ color: "rgba(255,255,255,0.78)", fontWeight: 600 }}>
-                        Developer & Problem Solver
-                    </span>{" "}
-                    from Vizag — I build{" "}
-                    <span style={{ color: "rgba(255,255,255,0.78)", fontWeight: 600 }}>
-                        practical applications that solve real-life problems
-                    </span>.
-                    From idea to implementation, I focus on creating{" "}
-                    <span style={{ color: "#00ffe5", fontWeight: 600 }}>impactful and user-focused solutions</span>.
+                    Hi, I'm <strong className="text-slate-200 font-semibold">Sai Sankar Tumpala</strong>. I build robust full-stack applications and intelligent ML systems designed to solve real problems and deliver seamless user experiences.
                 </motion.p>
 
-                {/* Divider line */}
+                {/* Action CTAs */}
                 <motion.div
-                    initial={{ scaleX: 0 }}
-                    animate={{ scaleX: 1 }}
-                    transition={{ delay: 0.55, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-                    className="w-24 h-px origin-left"
-                    style={{ background: "linear-gradient(90deg, #00ffe5, transparent)" }}
-                />
-
-                {/* CTA Buttons */}
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
+                    initial={{ opacity: 0, y: 16 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.65 }}
-                    className="flex flex-wrap justify-center gap-4"
+                    transition={{ duration: 0.6, delay: 0.4 }}
+                    className="flex flex-wrap items-center justify-center gap-3.5 pt-2"
                 >
-                    <motion.button
-                        whileHover={{ scale: 1.04 }}
-                        whileTap={{ scale: 0.96 }}
-                        onClick={() => document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" })}
-                        className="flex items-center gap-2 px-7 py-3.5 rounded-xl font-bold text-xs uppercase tracking-widest"
-                        style={{
-                            fontFamily: "'IBM Plex Mono', monospace",
-                            background: "#00ffe5",
-                            color: "#060a0f",
-                            boxShadow: "0 8px 28px -8px rgba(0,255,229,0.35)",
-                        }}
+                    <Button
+                        variant="primary"
+                        size="lg"
+                        onClick={() => scrollTo("projects")}
+                        className="group"
                     >
-                        View My Work <ArrowUpRight size={16} />
-                    </motion.button>
+                        <span>View Selected Work</span>
+                        <ArrowUpRight size={16} className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                    </Button>
 
-                    <motion.button
-                        whileHover={{ scale: 1.04 }}
-                        whileTap={{ scale: 0.96 }}
-                        onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}
-                        className="flex items-center gap-2 px-7 py-3.5 rounded-xl font-bold text-xs uppercase tracking-widest"
-                        style={{
-                            fontFamily: "'IBM Plex Mono', monospace",
-                            background: "rgba(255,255,255,0.04)",
-                            border: "1px solid rgba(255,255,255,0.1)",
-                            color: "rgba(255,255,255,0.75)",
-                            backdropFilter: "blur(8px)",
-                        }}
+                    <Button
+                        variant="secondary"
+                        size="lg"
+                        onClick={() => scrollTo("contact")}
                     >
-                        Let's Connect <Mail size={15} style={{ color: "#00ffe5" }} />
-                    </motion.button>
+                        <Mail size={16} className="text-cyan-400" />
+                        <span>Get in Touch</span>
+                    </Button>
                 </motion.div>
 
-                {/* Stats */}
+                {/* Quick Highlights / Proof Points */}
                 <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.82 }}
-                    className="mt-6 flex items-center gap-10"
+                    initial={{ opacity: 0, y: 16 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.5 }}
+                    className="flex flex-wrap items-center justify-center gap-6 sm:gap-10 pt-6 text-xs text-slate-400 border-t border-white/[0.06] w-full max-w-lg"
                 >
-                    {[
-
-                        { value: "5+", label: "Projects" },
-                        { value: "100%", label: "Passion" },
-                    ].map((stat, _i) => (
-                        <motion.div
-                            key={stat.label}
-                            whileHover={{ y: -3 }}
-                            className="flex flex-col items-center gap-0.5 cursor-default group"
-                        >
-                            <span
-                                className="text-2xl font-extrabold group-hover:text-[#00ffe5] transition-colors duration-300"
-                                style={{ color: "rgba(255,255,255,0.9)" }}
-                            >
-                                {stat.value}
-                            </span>
-                            <span
-                                className="text-[0.58rem] font-bold tracking-[0.3em] uppercase"
-                                style={{
-                                    fontFamily: "'IBM Plex Mono', monospace",
-                                    color: "rgba(255,255,255,0.3)",
-                                }}
-                            >
-                                {stat.label}
-                            </span>
-                        </motion.div>
-                    ))}
+                    <div className="flex items-center gap-2">
+                        <CheckCircle2 size={15} className="text-cyan-400" />
+                        <span>5+ Full-Stack Projects</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                        <CheckCircle2 size={15} className="text-cyan-400" />
+                        <span>3+ AI/ML Projects</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                        <CheckCircle2 size={15} className="text-cyan-400" />
+                        <span>Clean Architecture</span>
+                    </div>
                 </motion.div>
             </motion.div>
 
-            {/* ── SCROLL INDICATOR ── */}
+            {/* Scroll Indicator */}
             <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ delay: 1.4 }}
-                onClick={() => document.getElementById("about")?.scrollIntoView({ behavior: "smooth" })}
-                className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 cursor-pointer group"
+                transition={{ delay: 0.8, duration: 0.6 }}
+                onClick={() => scrollTo("about")}
+                className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 cursor-pointer text-slate-500 hover:text-slate-300 transition-colors select-none"
             >
-                <span
-                    className="text-[0.48rem] font-bold tracking-[0.55em] uppercase group-hover:text-[#00ffe5] transition-colors"
-                    style={{ fontFamily: "'IBM Plex Mono', monospace", color: "rgba(255,255,255,0.18)" }}
-                >
-                    Scroll
-                </span>
-                <div
-                    className="w-5 h-9 rounded-full flex justify-center pt-1.5"
-                    style={{ border: "1.5px solid rgba(255,255,255,0.1)" }}
-                >
-                    <motion.div
-                        animate={{ y: [0, 14, 0] }}
-                        transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                        className="w-1 h-1 rounded-full"
-                        style={{ background: "#00ffe5", boxShadow: "0 0 6px #00ffe5" }}
-                    />
-                </div>
+                <span className="text-[10px] font-mono tracking-widest uppercase">Explore</span>
+                <ChevronDown size={15} className="animate-bounce" />
             </motion.div>
         </section>
     );
