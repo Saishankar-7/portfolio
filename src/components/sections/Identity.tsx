@@ -132,36 +132,6 @@ const Identity = () => {
                                 </p>
                             </div>
                         </div>
-
-                        {/* Core Engineering Pillars */}
-                        <div className="space-y-4">
-                            <h3 className="text-xs font-mono uppercase tracking-widest text-slate-400 font-medium">
-                                Core Competencies & Workflow
-                            </h3>
-                            <div className="grid sm:grid-cols-2 gap-4">
-                                {pillars.map((pillar, i) => {
-                                    const Icon = pillar.icon;
-                                    return (
-                                        <div
-                                            key={i}
-                                            className="glass-card p-4 rounded-xl space-y-2 hover:border-cyan-500/30 transition-all duration-300 group"
-                                        >
-                                            <div className="flex items-center gap-2.5">
-                                                <div className="p-2 rounded-lg bg-white/[0.04] text-cyan-400 group-hover:bg-cyan-500/10 group-hover:text-cyan-300 transition-colors">
-                                                    <Icon size={16} />
-                                                </div>
-                                                <h4 className="text-sm font-semibold text-slate-200">
-                                                    {pillar.title}
-                                                </h4>
-                                            </div>
-                                            <p className="text-xs text-slate-400 leading-relaxed">
-                                                {pillar.desc}
-                                            </p>
-                                        </div>
-                                    );
-                                })}
-                            </div>
-                        </div>
                     </motion.div>
                 </div>
             </div>
