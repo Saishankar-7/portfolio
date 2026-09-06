@@ -1,30 +1,7 @@
 import { motion } from "framer-motion";
-import { Layout, Brain, Server, Sparkles, GraduationCap, MapPin, Briefcase } from "lucide-react";
+import { GraduationCap, MapPin, Briefcase } from "lucide-react";
 import profileImg from "../../assets/images/sai.png";
 import { SectionTitle } from "../ui/SectionTitle";
-
-const pillars = [
-    {
-        icon: Layout,
-        title: "Frontend Engineering",
-        desc: "Building accessible, performant, and responsive interfaces with React, TypeScript, and Tailwind CSS.",
-    },
-    {
-        icon: Server,
-        title: "Backend & Systems",
-        desc: "Developing secure RESTful APIs, asynchronous worker pipelines, and database schemas with Node.js & Python.",
-    },
-    {
-        icon: Brain,
-        title: "Applied AI & ML",
-        desc: "Integrating predictive models, natural language processing, and deep learning algorithms into user-facing apps.",
-    },
-    {
-        icon: Sparkles,
-        title: "Product & UI Polish",
-        desc: "Ensuring sub-second load times, smooth micro-interactions, clean typography, and WCAG AA accessibility.",
-    },
-];
 
 const Identity = () => {
     return (
